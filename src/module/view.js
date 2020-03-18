@@ -245,23 +245,46 @@ define(function(require, exports, module) {
         var MoveCommand = kity.createClass('MoveCommand', {
             base: Command,
 
-            execute: function(km, dir) {
+            execute: function(km, dir, duration) {
                 var dragger = km._viewDragger;
                 var size = km._lastClientSize;
-                var duration = km.getOption('viewAnimationDuration');
-                switch (dir) {
-                    case 'up':
-                        dragger.move(new kity.Point(0, size.height / 2), duration);
-                        break;
-                    case 'down':
-                        dragger.move(new kity.Point(0, -size.height / 2), duration);
-                        break;
-                    case 'left':
-                        dragger.move(new kity.Point(size.width / 2, 0), duration);
-                        break;
-                    case 'right':
-                        dragger.move(new kity.Point(-size.width / 2, 0), duration);
-                        break;
+                if (duration === undefined || duration === null) {
+                    duration = km.getOption('viewAnimationDuration');
+                }
+                if (typeof dir !== 'string') {
+                    let movement = dragger.getMovement();
+                    let x = movement.x;
+                    let y = movement.y;
+                    if (dir.x !== undefined) {
+                        x = dir.x;
+                    }
+                    if (dir.y !== undefined) {
+                        y = dir.y;
+                    }                    
+                    dragger.moveTo(new kity.Point(x, y), duration);
+                } else {
+                    switch (dir) {
+                        case 'auto':                            
+                            let nodeBox = dragger._minder.getRenderContainer().node.getBBox();
+                            let x = 40;
+                            if (nodeBox.width < size.width) {
+                                x = (size.width - nodeBox.width) / 2;
+                            }
+                            dragger.moveTo(new kity.Point(x, size.height / 2), duration);
+                            break;
+                        case 'up':
+                            dragger.move(new kity.Point(0, size.height / 2), duration);
+                            break;
+                        case 'down':
+                            dragger.move(new kity.Point(0, -size.height / 2), duration);
+                            break;
+                        case 'left':
+                            dragger.move(new kity.Point(size.width / 2, 0), duration);
+                            break;
+                        case 'right':
+                            dragger.move(new kity.Point(-size.width / 2, 0), duration);
+                            break;
+                    }
                 }
             },
 

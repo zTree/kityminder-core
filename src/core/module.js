@@ -118,7 +118,8 @@ define(function(require, exports, module) {
         },
 
         _garbage: function() {
-            this.clearSelect();
+            // wiz patch 2020-03-17 clearSelect 方法不存在
+            // this.clearSelect();
 
             while (this._root.getChildren().length) {
                 this._root.removeChild(0);
