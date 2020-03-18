@@ -245,6 +245,7 @@ define(function(require, exports, module) {
         var MoveCommand = kity.createClass('MoveCommand', {
             base: Command,
 
+            // wiz patch 2020-03-18 修正 duration & 增加 随意移动 & 增加 dir 支持 auto
             execute: function(km, dir, duration) {
                 var dragger = km._viewDragger;
                 var size = km._lastClientSize;
