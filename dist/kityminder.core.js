@@ -6235,7 +6235,10 @@ _p[54] = {
                     var icon = new NoteIcon();
                     icon.on("mousedown", function(e) {
                         e.preventDefault();
-                        node.getMinder().fire("editnoterequest");
+                        node.getMinder().fire("editnoterequest", {
+                            node: node,
+                            icon: icon
+                        });
                     });
                     icon.on("mouseover", function() {
                         node.getMinder().fire("shownoterequest", {
