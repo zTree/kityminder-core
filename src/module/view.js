@@ -253,9 +253,9 @@ define(function(require, exports, module) {
                     duration = km.getOption('viewAnimationDuration');
                 }
                 if (typeof dir !== 'string') {
-                    let movement = dragger.getMovement();
-                    let x = movement.x;
-                    let y = movement.y;
+                    var movement = dragger.getMovement();
+                    var x = movement.x;
+                    var y = movement.y;
                     if (dir.x !== undefined) {
                         x = dir.x;
                     }
@@ -266,11 +266,12 @@ define(function(require, exports, module) {
                 } else {
                     switch (dir) {
                         case 'auto':                            
-                            let nodeBox = dragger._minder.getRenderContainer().node.getBBox();
-                            let x = 40;
-                            if (nodeBox.width < size.width) {
-                                x = (size.width - nodeBox.width) / 2;
+                            var nodeBox = dragger._minder.getRenderContainer().node.getBBox();
+                            var x = 40;
+                            if (nodeBox.width < size.width - 40) {
+                                x = (size.width - nodeBox.width) / 2 - nodeBox.x;
                             }
+                            var y = size.height / 2 - nodeBox.y;
                             dragger.moveTo(new kity.Point(x, size.height / 2), duration);
                             break;
                         case 'up':

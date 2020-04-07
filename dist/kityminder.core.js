@@ -1,9 +1,9 @@
 /*!
  * ====================================================
- * Kity Minder Core - v1.4.50 - 2018-09-17
+ * Kity Minder Core - v1.4.50 - 2020-04-07
  * https://github.com/fex-team/kityminder-core
  * GitHub: https://github.com/fex-team/kityminder-core.git 
- * Copyright (c) 2018 Baidu FEX; Licensed BSD-3-Clause
+ * Copyright (c) 2020 Baidu FEX; Licensed BSD-3-Clause
  * ====================================================
  */
 
@@ -2075,7 +2075,8 @@ _p[20] = {
                 }
             },
             _garbage: function() {
-                this.clearSelect();
+                // wiz patch 2020-03-17 clearSelect 方法不存在
+                // this.clearSelect();
                 while (this._root.getChildren().length) {
                     this._root.removeChild(0);
                 }
@@ -7665,26 +7666,52 @@ _p[62] = {
          */
             var MoveCommand = kity.createClass("MoveCommand", {
                 base: Command,
-                execute: function(km, dir) {
+                // wiz patch 2020-03-18 修正 duration & 增加 随意移动 & 增加 dir 支持 auto
+                execute: function(km, dir, duration) {
                     var dragger = km._viewDragger;
                     var size = km._lastClientSize;
-                    var duration = km.getOption("viewAnimationDuration");
-                    switch (dir) {
-                      case "up":
-                        dragger.move(new kity.Point(0, size.height / 2), duration);
-                        break;
+                    if (duration === undefined || duration === null) {
+                        duration = km.getOption("viewAnimationDuration");
+                    }
+                    if (typeof dir !== "string") {
+                        var movement = dragger.getMovement();
+                        var x = movement.x;
+                        var y = movement.y;
+                        if (dir.x !== undefined) {
+                            x = dir.x;
+                        }
+                        if (dir.y !== undefined) {
+                            y = dir.y;
+                        }
+                        dragger.moveTo(new kity.Point(x, y), duration);
+                    } else {
+                        switch (dir) {
+                          case "auto":
+                            var nodeBox = dragger._minder.getRenderContainer().node.getBBox();
+                            var x = 40;
+                            if (nodeBox.width < size.width - 40) {
+                                x = (size.width - nodeBox.width) / 2 - nodeBox.x;
+                            }
+                            var y = size.height / 2 - nodeBox.y;
+                            dragger.moveTo(new kity.Point(x, size.height / 2), duration);
+                            break;
 
-                      case "down":
-                        dragger.move(new kity.Point(0, -size.height / 2), duration);
-                        break;
+                          case "up":
+                            dragger.move(new kity.Point(0, size.height / 2), duration);
+                            break;
 
-                      case "left":
-                        dragger.move(new kity.Point(size.width / 2, 0), duration);
-                        break;
+                          case "down":
+                            dragger.move(new kity.Point(0, -size.height / 2), duration);
+                            break;
 
-                      case "right":
-                        dragger.move(new kity.Point(-size.width / 2, 0), duration);
-                        break;
+                          case "left":
+                            dragger.move(new kity.Point(size.width / 2, 0), duration);
+                            break;
+
+                          case "right":
+                            dragger.move(new kity.Point(-size.width / 2, 0), duration);
+                            break;
+                        }
                     }
                 },
                 enableReadOnly: true
