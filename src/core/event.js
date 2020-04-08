@@ -2,6 +2,8 @@ define(function(require, exports, module) {
     var kity = require('./kity');
     var utils = require('./utils');
     var Minder = require('./minder');
+    var _firePharseForBind = null;
+    
 
     /**
      * @class MinderEvent
@@ -140,10 +142,20 @@ define(function(require, exports, module) {
             this._initEvents();
             this._bindEvents();
         },
+        _removeEvents: function() {
+            if (_firePharseForBind) {
+                var type = 'click dblclick mousedown contextmenu mouseup mousemove mouseover mousewheel DOMMouseScroll touchstart touchmove touchend dragenter dragleave drop';
+                var paper = this._paper;
+                type.split(' ').forEach(function(name) {
+                    paper.off(name, _firePharseForBind);
+                });
+            }
+        },
 
         _bindEvents: function() {
             /* jscs:disable maximumLineLength */
-            this._paper.on('click dblclick mousedown contextmenu mouseup mousemove mouseover mousewheel DOMMouseScroll touchstart touchmove touchend dragenter dragleave drop', this._firePharse.bind(this));
+            _firePharseForBind = this._firePharse.bind(this);
+            this._paper.on('click dblclick mousedown contextmenu mouseup mousemove mouseover mousewheel DOMMouseScroll touchstart touchmove touchend dragenter dragleave drop', _firePharseForBind);
             if (window) {
                 window.addEventListener('resize', this._firePharse.bind(this));
             }

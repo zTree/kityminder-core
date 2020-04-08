@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * Kity Minder Core - v1.4.50 - 2020-04-07
+ * Kity Minder Core - v1.4.50 - 2020-04-08
  * https://github.com/fex-team/kityminder-core
  * GitHub: https://github.com/fex-team/kityminder-core.git 
  * Copyright (c) 2020 Baidu FEX; Licensed BSD-3-Clause
@@ -1056,6 +1056,7 @@ _p[13] = {
         var kity = _p.r(17);
         var utils = _p.r(33);
         var Minder = _p.r(19);
+        var _firePharseForBind = null;
         /**
      * @class MinderEvent
      * @description 表示一个脑图中发生的事件
@@ -1176,9 +1177,19 @@ _p[13] = {
                 this._initEvents();
                 this._bindEvents();
             },
+            _removeEvents: function() {
+                if (_firePharseForBind) {
+                    var type = "click dblclick mousedown contextmenu mouseup mousemove mouseover mousewheel DOMMouseScroll touchstart touchmove touchend dragenter dragleave drop";
+                    var paper = this._paper;
+                    type.split(" ").forEach(function(name) {
+                        paper.off(name, _firePharseForBind);
+                    });
+                }
+            },
             _bindEvents: function() {
                 /* jscs:disable maximumLineLength */
-                this._paper.on("click dblclick mousedown contextmenu mouseup mousemove mouseover mousewheel DOMMouseScroll touchstart touchmove touchend dragenter dragleave drop", this._firePharse.bind(this));
+                _firePharseForBind = this._firePharse.bind(this);
+                this._paper.on("click dblclick mousedown contextmenu mouseup mousemove mouseover mousewheel DOMMouseScroll touchstart touchmove touchend dragenter dragleave drop", _firePharseForBind);
                 if (window) {
                     window.addEventListener("resize", this._firePharse.bind(this));
                 }
@@ -1440,9 +1451,16 @@ _p[16] = {
         var kity = _p.r(17);
         var utils = _p.r(33);
         var Minder = _p.r(19);
+        var listenFun = null;
+        var receiver = null;
         function listen(element, type, handler) {
             type.split(" ").forEach(function(name) {
                 element.addEventListener(name, handler, false);
+            });
+        }
+        function removeListen(element, type, handler) {
+            type.split(" ").forEach(function(name) {
+                element.removeEventListener(name, handler);
             });
         }
         Minder.registerInitHook(function(option) {
@@ -1454,16 +1472,21 @@ _p[16] = {
                     this._initKeyReceiver();
                 });
             }
+            this.on("destroy", function() {
+                if (listenFun) {
+                    removeListen(receiver, "keydown keyup keypress copy paste blur focus input", listenFun);
+                }
+            });
         });
         kity.extendClass(Minder, {
             _initKeyReceiver: function() {
                 if (this._keyReceiver) return;
-                var receiver = this._keyReceiver = document.createElement("input");
+                receiver = this._keyReceiver = document.createElement("input");
                 receiver.classList.add("km-receiver");
                 var renderTarget = this._renderTarget;
                 renderTarget.appendChild(receiver);
                 var minder = this;
-                listen(receiver, "keydown keyup keypress copy paste blur focus input", function(e) {
+                listenFun = function(e) {
                     switch (e.type) {
                       case "blur":
                         minder.blur();
@@ -1479,7 +1502,8 @@ _p[16] = {
                     }
                     minder._firePharse(e);
                     e.preventDefault();
-                });
+                };
+                listen(receiver, "keydown keyup keypress copy paste blur focus input", listenFun);
                 this.on("focus", function() {
                     receiver.select();
                     receiver.focus();
@@ -2083,7 +2107,8 @@ _p[20] = {
             },
             destroy: function() {
                 var modules = this._modules;
-                this._resetEvents();
+                this.fire("destroy");
+                this._removeEvents();
                 this._garbage();
                 for (var key in modules) {
                     if (!modules[key].destroy) continue;

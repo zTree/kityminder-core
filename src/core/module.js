@@ -129,13 +129,15 @@ define(function(require, exports, module) {
         destroy: function() {
             var modules = this._modules;
 
-            this._resetEvents();
+            this.fire('destroy');
+            this._removeEvents();
             this._garbage();
 
             for (var key in modules) {
                 if (!modules[key].destroy) continue;
                 modules[key].destroy.call(this);
             }
+
         },
 
         reset: function() {

@@ -2,10 +2,17 @@ define(function(require, exports, module) {
     var kity = require('./kity');
     var utils = require('./utils');
     var Minder = require('./minder');
+    var listenFun = null;
+    var receiver = null;
 
     function listen(element, type, handler) {
         type.split(' ').forEach(function(name) {
             element.addEventListener(name, handler, false);
+        });
+    }
+    function removeListen(element, type, handler) {
+        type.split(' ').forEach(function(name) {
+            element.removeEventListener(name, handler);
         });
     }
 
@@ -18,6 +25,12 @@ define(function(require, exports, module) {
                 this._initKeyReceiver();
             });
         }
+        this.on('destroy', function() {
+            if (listenFun) {
+                removeListen(receiver, 'keydown keyup keypress copy paste blur focus input', listenFun);
+            }
+
+        });
     });
 
     kity.extendClass(Minder, {
@@ -25,7 +38,7 @@ define(function(require, exports, module) {
 
             if (this._keyReceiver) return;
 
-            var receiver = this._keyReceiver = document.createElement('input');
+            receiver = this._keyReceiver = document.createElement('input');
             receiver.classList.add('km-receiver');
 
             var renderTarget = this._renderTarget;
@@ -33,7 +46,7 @@ define(function(require, exports, module) {
 
             var minder = this;
 
-            listen(receiver, 'keydown keyup keypress copy paste blur focus input', function(e) {
+            listenFun = function(e) {
                 switch (e.type) {
                     case 'blur':
                         minder.blur();
@@ -47,7 +60,9 @@ define(function(require, exports, module) {
                 }
                 minder._firePharse(e);
                 e.preventDefault();
-            });
+            }
+
+            listen(receiver, 'keydown keyup keypress copy paste blur focus input', listenFun);
 
             this.on('focus', function() {
                 receiver.select();
