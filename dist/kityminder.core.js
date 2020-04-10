@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * Kity Minder Core - v1.4.50 - 2020-04-08
+ * Kity Minder Core - v1.4.50 - 2020-04-10
  * https://github.com/fex-team/kityminder-core
  * GitHub: https://github.com/fex-team/kityminder-core.git 
  * Copyright (c) 2020 Baidu FEX; Licensed BSD-3-Clause
@@ -3614,6 +3614,7 @@ _p[32] = {
             }
         });
         kity.extendClass(Minder, {
+            themeRegister: register,
             /**
          * 切换脑图实例上的主题
          * @param  {String} name 要使用的主题的名称
@@ -3869,6 +3870,7 @@ _p[35] = {
         _p.r(78);
         _p.r(80);
         _p.r(79);
+        _p.r(81);
         _p.r(0);
         _p.r(1);
         _p.r(2);
@@ -9393,6 +9395,57 @@ _p[80] = {
             "sub-drop-hint-width": 2,
             "main-drop-hint-width": 4,
             "root-drop-hint-width": 4,
+            "order-hint-area-color": "rgba(0, 255, 0, .5)",
+            "order-hint-path-color": "#0f0",
+            "order-hint-path-width": 1,
+            "text-selection-color": "rgb(27,171,255)",
+            "line-height": 1.5
+        });
+    }
+};
+
+//src/theme/wiz.js
+_p[81] = {
+    value: function(require, exports, module) {
+        var theme = _p.r(32);
+        theme.register("wiz", {
+            background: "transparent",
+            "root-color": "#430",
+            "root-background": "#e9df98",
+            "root-stroke": "#e9df98",
+            "root-font-size": 24,
+            "root-padding": [ 35, 35 ],
+            "root-margin": 30,
+            "root-radius": 100,
+            "root-space": 10,
+            "root-shadow": "rgba(0, 0, 0, .25)",
+            "main-color": "#333",
+            "main-background": "#a4c5c0",
+            "main-stroke": "#a4c5c0",
+            "main-font-size": 16,
+            "main-padding": [ 6, 20 ],
+            "main-margin": [ 20, 20 ],
+            "main-radius": 5,
+            "main-space": 5,
+            "main-shadow": "rgba(0, 0, 0, .25)",
+            "sub-color": "black",
+            "sub-background": "white",
+            "sub-stroke": "white",
+            "sub-font-size": 12,
+            "sub-padding": [ 5, 10 ],
+            "sub-margin": [ 10 ],
+            "sub-radius": 5,
+            "sub-space": 5,
+            "connect-color": "white",
+            "connect-width": 3,
+            "main-connect-width": 3,
+            "connect-radius": 5,
+            "selected-background": "rgb(254, 219, 0)",
+            "selected-stroke": "rgb(254, 219, 0)",
+            "marquee-background": "rgba(255,255,255,.3)",
+            "marquee-stroke": "white",
+            "drop-hint-color": "yellow",
+            "drop-hint-width": 4,
             "order-hint-area-color": "rgba(0, 255, 0, .5)",
             "order-hint-path-color": "#0f0",
             "order-hint-path-width": 1,

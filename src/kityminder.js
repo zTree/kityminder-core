@@ -86,6 +86,8 @@ define(function(require, exports, module) {
     require('./theme/snow');
     require('./theme/wire');
     require('./theme/tianpan');
+    require('./theme/wiz');
+
 
     require('./connect/arc');
     require('./connect/arc_tp');

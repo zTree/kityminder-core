@@ -59,11 +59,12 @@
     seajs.config({
         base: './src'
     });
+    var km;
     define('start', function(require) {
         var Minder = require('kityminder').Minder;
 
         // 创建 km 实例
-        var km = window.km = new Minder();
+        km = window.km = new Minder();
         km.setup('#minder-view');
     });
     seajs.use('start');

@@ -50,6 +50,7 @@ define(function(require, exports, module) {
     });
 
     kity.extendClass(Minder, {
+        themeRegister: register,
 
         /**
          * 切换脑图实例上的主题
