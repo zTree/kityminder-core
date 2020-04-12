@@ -130,10 +130,13 @@ define(function(require, exports, module) {
             base: kity.Group,
 
             constructor: function(node) {
+                var outlineStroke = node.getStyle('expander-outline-stroke') || 'gray';
+                var outlinefill = node.getStyle('expander-outline-fill') || 'white';
+                var signStroke = node.getStyle('expander-sign-stroke') || 'gray';
                 this.callBase();
                 this.radius = 6;
-                this.outline = new kity.Circle(this.radius).stroke('gray').fill('white');
-                this.sign = new kity.Path().stroke('gray');
+                this.outline = new kity.Circle(this.radius).stroke(outlineStroke).fill(outlinefill);
+                this.sign = new kity.Path().stroke(signStroke);
                 this.addShapes([this.outline, this.sign]);
                 this.initEvent(node);
                 this.setId(utils.uuid('node_expander'));
@@ -198,6 +201,14 @@ define(function(require, exports, module) {
 
                 var vector = node.getLayoutVectorIn().normalize(expander.radius + node.getStyle('stroke-width'));
                 var position = node.getVertexIn().offset(vector.reverse());
+
+                if (visible && node.children.length) {
+                    var outlineStroke = node.getStyle('expander-outline-stroke') || 'gray';
+                    var outlinefill = node.getStyle('expander-outline-fill') || 'white';
+                    var signStroke = node.getStyle('expander-sign-stroke') || 'gray';
+                    expander.outline.stroke(outlineStroke).fill(outlinefill);
+                    expander.sign.stroke(signStroke);
+                }
 
                 this.expander.setTranslate(position);
             }

@@ -36,7 +36,13 @@
                 "imageSize": { "width": 270, "height": 129 }
             },
             "children": [
-                { "data": { "text": "新闻" } },
+                {
+                    "data": { "text": "新闻" },
+                    "children": [
+                        {"data": { "text": "新闻 1" }},
+                        {"data": { "text": "新闻 2" }}
+                    ]
+                },
                 { "data": { "text": "网页", "priority": 1 } },
                 { "data": { "text": "贴吧", "priority": 2 } },
                 { "data": { "text": "知道", "priority": 2 } },
@@ -59,12 +65,11 @@
     seajs.config({
         base: './src'
     });
-    var km;
     define('start', function(require) {
         var Minder = require('kityminder').Minder;
 
         // 创建 km 实例
-        km = window.km = new Minder();
+        var km = window.km = new Minder();
         km.setup('#minder-view');
     });
     seajs.use('start');
