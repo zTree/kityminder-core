@@ -70,7 +70,11 @@
 
         // 创建 km 实例
         var km = window.km = new Minder();
+        km.on('layoutallfinish', function() {
+            km.execCommand('Move', 'auto');
+        });
         km.setup('#minder-view');
+
     });
     seajs.use('start');
 </script>

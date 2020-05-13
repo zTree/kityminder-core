@@ -90,6 +90,13 @@ define(function(require, exports, module) {
             return this._theme || this.getOption('defaultTheme') || 'fresh-blue';
         },
 
+        getThemeData: function(name) {
+            if (!name || !_themes[name]) {
+                return null;
+            }
+            return _themes[name];
+        },
+
         getThemeItems: function(node) {
             var theme = this.getTheme(node);
             return _themes[this.getTheme(node)];
