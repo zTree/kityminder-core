@@ -25,9 +25,12 @@ define(function(require, exports, module) {
         },
 
         setEnabled: function(value) {
-            var paper = this._minder.getPaper();
-            paper.setStyle('cursor', value ? 'pointer' : 'default');
-            paper.setStyle('cursor', value ? '-webkit-grab' : 'default');
+            var enableChangeCursor = this._minder.getOption('enableChangeCursor');
+            if (enableChangeCursor) {
+                var paper = this._minder.getPaper();
+                paper.setStyle('cursor', value ? 'pointer' : 'default');
+                paper.setStyle('cursor', value ? '-webkit-grab' : 'default');
+            }
             this._enabled = value;
         },
         timeline: function() {
@@ -106,8 +109,11 @@ define(function(require, exports, module) {
                     if (dragger._minder.getStatus() == 'hand')
                         dragger._minder.rollbackStatus();
                 }
-                var paper = dragger._minder.getPaper();
-                paper.setStyle('cursor', dragger._minder.getStatus() == 'hand' ? '-webkit-grab' : 'default');
+                var enableChangeCursor = dragger._minder.getOption('enableChangeCursor');
+                if (enableChangeCursor) {
+                    var paper = dragger._minder.getPaper();
+                    paper.setStyle('cursor', dragger._minder.getStatus() == 'hand' ? '-webkit-grab' : 'default');
+                }
 
                 dragger._minder.fire('viewchanged');
             }
@@ -137,8 +143,12 @@ define(function(require, exports, module) {
                     var offset = kity.Vector.fromPoints(lastPosition, e.getPosition('view'));
                     if (offset.length() > 10) {
                         this.setStatus('hand', true);
-                        var paper = dragger._minder.getPaper();
-                        paper.setStyle('cursor', '-webkit-grabbing');
+
+                        var enableChangeCursor = dragger._minder.getOption('enableChangeCursor');
+                        if (enableChangeCursor) {
+                            var paper = dragger._minder.getPaper();
+                            paper.setStyle('cursor', '-webkit-grabbing');
+                        }
                     }
                 })
 
@@ -147,8 +157,11 @@ define(function(require, exports, module) {
                 if (dragger.isEnabled()) {
                     lastPosition = e.getPosition('view');
                     e.stopPropagation();
-                    var paper = dragger._minder.getPaper();
-                    paper.setStyle('cursor', '-webkit-grabbing');
+                    var enableChangeCursor = dragger._minder.getOption('enableChangeCursor');
+                    if (enableChangeCursor) {
+                        var paper = dragger._minder.getPaper();
+                        paper.setStyle('cursor', '-webkit-grabbing');
+                    }
                 }
             })
 

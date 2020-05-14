@@ -7547,9 +7547,12 @@ _p[62] = {
                 return this._enabled;
             },
             setEnabled: function(value) {
-                var paper = this._minder.getPaper();
-                paper.setStyle("cursor", value ? "pointer" : "default");
-                paper.setStyle("cursor", value ? "-webkit-grab" : "default");
+                var enableChangeCursor = this._minder.getOption("enableChangeCursor");
+                if (enableChangeCursor) {
+                    var paper = this._minder.getPaper();
+                    paper.setStyle("cursor", value ? "pointer" : "default");
+                    paper.setStyle("cursor", value ? "-webkit-grab" : "default");
+                }
                 this._enabled = value;
             },
             timeline: function() {
@@ -7602,8 +7605,11 @@ _p[62] = {
                         isTempDrag = false;
                         if (dragger._minder.getStatus() == "hand") dragger._minder.rollbackStatus();
                     }
-                    var paper = dragger._minder.getPaper();
-                    paper.setStyle("cursor", dragger._minder.getStatus() == "hand" ? "-webkit-grab" : "default");
+                    var enableChangeCursor = dragger._minder.getOption("enableChangeCursor");
+                    if (enableChangeCursor) {
+                        var paper = dragger._minder.getPaper();
+                        paper.setStyle("cursor", dragger._minder.getStatus() == "hand" ? "-webkit-grab" : "default");
+                    }
                     dragger._minder.fire("viewchanged");
                 }
                 this._minder.on("normal.mousedown normal.touchstart " + "inputready.mousedown inputready.touchstart " + "readonly.mousedown readonly.touchstart", function(e) {
@@ -7623,16 +7629,22 @@ _p[62] = {
                     var offset = kity.Vector.fromPoints(lastPosition, e.getPosition("view"));
                     if (offset.length() > 10) {
                         this.setStatus("hand", true);
-                        var paper = dragger._minder.getPaper();
-                        paper.setStyle("cursor", "-webkit-grabbing");
+                        var enableChangeCursor = dragger._minder.getOption("enableChangeCursor");
+                        if (enableChangeCursor) {
+                            var paper = dragger._minder.getPaper();
+                            paper.setStyle("cursor", "-webkit-grabbing");
+                        }
                     }
                 }).on("hand.beforemousedown hand.beforetouchstart", function(e) {
                     // 已经被用户打开拖放模式
                     if (dragger.isEnabled()) {
                         lastPosition = e.getPosition("view");
                         e.stopPropagation();
-                        var paper = dragger._minder.getPaper();
-                        paper.setStyle("cursor", "-webkit-grabbing");
+                        var enableChangeCursor = dragger._minder.getOption("enableChangeCursor");
+                        if (enableChangeCursor) {
+                            var paper = dragger._minder.getPaper();
+                            paper.setStyle("cursor", "-webkit-grabbing");
+                        }
                     }
                 }).on("hand.beforemousemove hand.beforetouchmove", function(e) {
                     if (lastPosition) {
