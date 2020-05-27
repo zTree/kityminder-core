@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * Kity Minder Core - v1.4.50.5 - 2020-05-14
+ * Kity Minder Core - v1.4.50.6 - 2020-05-19
  * https://github.com/fex-team/kityminder-core
  * GitHub: https://github.com/fex-team/kityminder-core.git 
  * Copyright (c) 2020 Baidu FEX; Licensed BSD-3-Clause
@@ -9459,7 +9459,7 @@ _p[81] = {
                 "sub-color": "black",
                 "sub-background": "transparent",
                 "sub-stroke": "none",
-                "sub-font-size": 12,
+                "sub-font-size": 14,
                 "sub-padding": [ 5, 10 ],
                 "sub-margin": [ 15, 20 ],
                 "sub-radius": 5,
@@ -9467,8 +9467,8 @@ _p[81] = {
                 "connect-color": "rgb(115, 161, 191)",
                 "connect-width": 1,
                 "connect-radius": 5,
-                "selected-stroke": "rgb(57, 80, 96)",
-                "selected-stroke-width": "3",
+                "selected-stroke": "rgb{115, 161, 191)",
+                "selected-stroke-width": "1",
                 "blur-selected-stroke": "rgb(143, 155, 163)",
                 "marquee-background": "rgba(153, 214, 255, 0.1)",
                 "marquee-stroke": "rgb(115, 161 191)",
@@ -9503,8 +9503,8 @@ _p[81] = {
         var wizThemeGolden = initWizTheme();
         wizThemeGolden["background"] = "#FEF5E2";
         wizThemeGolden["root-color"] = "#FFFFFF";
-        wizThemeGolden["root-background"] = "#D5B358";
-        wizThemeGolden["root-stroke"] = "#D5B358";
+        wizThemeGolden["root-background"] = "#BB9325";
+        wizThemeGolden["root-stroke"] = "#BB9325";
         wizThemeGolden["main-color"] = "#505F79";
         wizThemeGolden["main-background"] = "#F7DD98";
         wizThemeGolden["main-stroke"] = "#F7DD98";
@@ -9518,10 +9518,10 @@ _p[81] = {
         theme.register("wiz-golden", wizThemeGolden);
         var wizThemeLightGreen = initWizTheme();
         wizThemeLightGreen["background"] = "#FFFFFF";
-        wizThemeLightGreen["root-color"] = "#0E9C6C";
+        wizThemeLightGreen["root-color"] = "#247056";
         wizThemeLightGreen["root-background"] = "#CEF2DF";
         wizThemeLightGreen["root-stroke"] = "#0E9C6C";
-        wizThemeLightGreen["main-color"] = "#00A3BF";
+        wizThemeLightGreen["main-color"] = "#008399";
         wizThemeLightGreen["main-background"] = "#E6FCFF";
         wizThemeLightGreen["main-stroke"] = "#00A3BF";
         wizThemeLightGreen["sub-color"] = "#505F79";
@@ -9534,13 +9534,13 @@ _p[81] = {
         theme.register("wiz-lightGreen", wizThemeLightGreen);
         var wizThemeSakura = initWizTheme();
         wizThemeSakura["background"] = "#FDF6F6";
-        wizThemeSakura["root-color"] = "#FF6F64";
+        wizThemeSakura["root-color"] = "#EF403A";
         wizThemeSakura["root-background"] = "#FFFFFF";
         wizThemeSakura["root-stroke"] = "#FFFFFF";
-        wizThemeSakura["main-color"] = "#FF6F64";
+        wizThemeSakura["main-color"] = "#DA251F";
         wizThemeSakura["main-background"] = "#FFDBDB";
         wizThemeSakura["main-stroke"] = "#FFDBDB";
-        wizThemeSakura["sub-color"] = "#FF6F64";
+        wizThemeSakura["sub-color"] = "#EF403A";
         wizThemeSakura["connect-color"] = "#FFBDAD";
         wizThemeSakura["selected-stroke"] = "#448AFF";
         wizThemeSakura["blur-selected-stroke"] = "#D6D9DD";
@@ -9553,11 +9553,11 @@ _p[81] = {
         wizThemeDarkBlue["root-color"] = "#172B4D";
         wizThemeDarkBlue["root-background"] = "#88B5FF";
         wizThemeDarkBlue["root-stroke"] = "#88B5FF";
-        wizThemeDarkBlue["main-color"] = "#D1E6FF";
+        wizThemeDarkBlue["main-color"] = "#FFFFFF";
         wizThemeDarkBlue["main-background"] = "#448AFF";
         wizThemeDarkBlue["main-stroke"] = "#448AFF";
-        wizThemeDarkBlue["sub-color"] = "#448AFF";
-        wizThemeDarkBlue["connect-color"] = "#448AFF";
+        wizThemeDarkBlue["sub-color"] = "#88B5FF";
+        wizThemeDarkBlue["connect-color"] = "#88B5FF";
         wizThemeDarkBlue["selected-stroke"] = "#FFFFFF";
         wizThemeDarkBlue["blur-selected-stroke"] = "#A7AFBC";
         wizThemeDarkBlue["expander-outline-stroke"] = "#88B5FF";
@@ -9585,10 +9585,10 @@ _p[81] = {
         wizThemePurple["root-color"] = "#8251DD";
         wizThemePurple["root-background"] = "#FFFFFF";
         wizThemePurple["root-stroke"] = "#FFFFFF";
-        wizThemePurple["main-color"] = "#8251DD";
+        wizThemePurple["main-color"] = "#6238B0";
         wizThemePurple["main-background"] = "#DDC4FF";
         wizThemePurple["main-stroke"] = "#DDC4FF";
-        wizThemePurple["sub-color"] = "#8251DD";
+        wizThemePurple["sub-color"] = "#6238B0";
         wizThemePurple["connect-color"] = "#8251DD";
         wizThemePurple["selected-stroke"] = "#448AFF";
         wizThemePurple["blur-selected-stroke"] = "#A7AFBC";
@@ -9602,15 +9602,15 @@ _p[81] = {
         wizThemeCyan["root-background"] = "#448AFF";
         wizThemeCyan["root-stroke"] = "#448AFF";
         wizThemeCyan["main-color"] = "#172B4D";
-        wizThemeCyan["main-background"] = "#FFFFFF";
-        wizThemeCyan["main-stroke"] = "#FFFFFF";
-        wizThemeCyan["sub-color"] = "#FFFFFF";
-        wizThemeCyan["connect-color"] = "#E6E9ED";
+        wizThemeCyan["main-background"] = "#D6D9DD";
+        wizThemeCyan["main-stroke"] = "#D6D9DD";
+        wizThemeCyan["sub-color"] = "#D6D9DD";
+        wizThemeCyan["connect-color"] = "#D6D9DD";
         wizThemeCyan["selected-stroke"] = "#1B63DC";
         wizThemeCyan["blur-selected-stroke"] = "#A7AFBC";
-        wizThemeCyan["expander-outline-stroke"] = "#E6E9ED";
+        wizThemeCyan["expander-outline-stroke"] = "#D6D9DD";
         wizThemeCyan["expander-outline-fill"] = "#272F40";
-        wizThemeCyan["expander-sign-stroke"] = "#E6E9ED";
+        wizThemeCyan["expander-sign-stroke"] = "#D6D9DD";
         theme.register("wiz-cyan", wizThemeCyan);
         var wizThemeSilver = initWizTheme();
         wizThemeSilver["background"] = "#E6E9ED";
@@ -9634,15 +9634,15 @@ _p[81] = {
         wizThemeGreen["root-background"] = "#FFFFFF";
         wizThemeGreen["root-stroke"] = "#FFFFFF";
         wizThemeGreen["main-color"] = "#247056";
-        wizThemeGreen["main-background"] = "#E7C873";
-        wizThemeGreen["main-stroke"] = "#E7C873";
-        wizThemeGreen["sub-color"] = "#E7C873";
-        wizThemeGreen["connect-color"] = "#E7C873";
+        wizThemeGreen["main-background"] = "#F7DD98";
+        wizThemeGreen["main-stroke"] = "#F7DD98";
+        wizThemeGreen["sub-color"] = "#FFECC6";
+        wizThemeGreen["connect-color"] = "#F7DD98";
         wizThemeGreen["selected-stroke"] = "#172B4D";
         wizThemeGreen["blur-selected-stroke"] = "#A7AFBC";
-        wizThemeGreen["expander-outline-stroke"] = "#E7C873";
+        wizThemeGreen["expander-outline-stroke"] = "#F7DD98";
         wizThemeGreen["expander-outline-fill"] = "#247056";
-        wizThemeGreen["expander-sign-stroke"] = "#E7C873";
+        wizThemeGreen["expander-sign-stroke"] = "#F7DD98";
         theme.register("wiz-green", wizThemeGreen);
         theme.register("wiz", wizThemeLightGreen);
         var wizWindowsNight = initWizTheme();
