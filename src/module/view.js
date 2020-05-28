@@ -62,6 +62,7 @@ define(function(require, exports, module) {
 
                 this._moveTimeline.on('finish', function() {
                     dragger._moveTimeline = null;
+                    dragger._minder.fire('MoveEnd');
                 });
 
                 return this;
@@ -166,9 +167,10 @@ define(function(require, exports, module) {
             })
 
             .on('hand.beforemousemove hand.beforetouchmove', function(e) {
-                if (lastPosition) {
+                if (!dragger.isEnabled()) {
+                    dragEnd(e);
+                } else if (lastPosition) {
                     currentPosition = e.getPosition('view');
-
                     // 当前偏移加上历史偏移
                     var offset = kity.Vector.fromPoints(lastPosition, currentPosition);
                     dragger.move(offset);
@@ -278,7 +280,7 @@ define(function(require, exports, module) {
                     dragger.moveTo(new kity.Point(x, y), duration);
                 } else {
                     switch (dir) {
-                        case 'auto':                            
+                        case 'auto':
                             var nodeBox = dragger._minder.getRenderContainer().node.getBBox();
                             var x = 40;
                             if (nodeBox.width < size.width - 40) {

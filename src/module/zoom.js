@@ -54,7 +54,7 @@ define(function(require, exports, module) {
             if (minder.getRoot().getComplex() > 200 || !duration) {
                 minder._zoomValue = value;
                 minder.zoom(value);
-                minder.fire('viewchange');
+                minder.fire('ZoomEnd');
             } else {
                 var animator = new kity.Animator({
                     beginValue: minder._zoomValue,
@@ -69,7 +69,7 @@ define(function(require, exports, module) {
                 }
                 timeline = animator.start(minder, duration, 'easeInOutSine');
                 timeline.on('finish', function() {
-                    minder.fire('viewchange');
+                    minder.fire('ZoomEnd');
                 });
             }
             minder.fire('zoom', {
