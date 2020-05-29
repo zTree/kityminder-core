@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * Kity Minder Core - v1.4.50.6 - 2020-05-19
+ * Kity Minder Core - v1.4.50.7 - 2020-05-29
  * https://github.com/fex-team/kityminder-core
  * GitHub: https://github.com/fex-team/kityminder-core.git 
  * Copyright (c) 2020 Baidu FEX; Licensed BSD-3-Clause
@@ -7532,6 +7532,14 @@ _p[62] = {
         var Command = _p.r(9);
         var Module = _p.r(20);
         var Renderer = _p.r(27);
+        kity.extendClass(Minder, function() {
+            return {
+                getMovement: function() {
+                    var translate = this.getRenderContainer().transform.translate;
+                    return translate ? translate[0] : new kity.Point();
+                }
+            };
+        }());
         var ViewDragger = kity.createClass("ViewDragger", {
             constructor: function(minder) {
                 this._minder = minder;
@@ -7560,27 +7568,24 @@ _p[62] = {
             },
             move: function(offset, duration) {
                 var minder = this._minder;
-                var targetPosition = this.getMovement().offset(offset);
+                var targetPosition = minder.getMovement().offset(offset);
                 this.moveTo(targetPosition, duration);
             },
             moveTo: function(position, duration) {
                 if (duration) {
                     var dragger = this;
                     if (this._moveTimeline) this._moveTimeline.stop();
-                    this._moveTimeline = this._minder.getRenderContainer().animate(new kity.Animator(this.getMovement(), position, function(target, value) {
+                    this._moveTimeline = this._minder.getRenderContainer().animate(new kity.Animator(this._minder.getMovement(), position, function(target, value) {
                         dragger.moveTo(value);
                     }), duration, "easeOutCubic").timeline();
                     this._moveTimeline.on("finish", function() {
                         dragger._moveTimeline = null;
+                        dragger._minder.fire("MoveEnd");
                     });
                     return this;
                 }
                 this._minder.getRenderContainer().setTranslate(position.round());
                 this._minder.fire("viewchange");
-            },
-            getMovement: function() {
-                var translate = this._minder.getRenderContainer().transform.translate;
-                return translate ? translate[0] : new kity.Point();
             },
             getView: function() {
                 var minder = this._minder;
@@ -7588,7 +7593,7 @@ _p[62] = {
                     width: minder.getRenderTarget().clientWidth,
                     height: minder.getRenderTarget().clientHeight
                 };
-                var m = this.getMovement();
+                var m = minder.getMovement();
                 var box = new kity.Box(0, 0, c.width, c.height);
                 var viewMatrix = minder.getPaper().getViewPortMatrix();
                 return viewMatrix.inverse().translate(-m.x, -m.y).transformBox(box);
@@ -7647,7 +7652,9 @@ _p[62] = {
                         }
                     }
                 }).on("hand.beforemousemove hand.beforetouchmove", function(e) {
-                    if (lastPosition) {
+                    if (!dragger.isEnabled()) {
+                        dragEnd(e);
+                    } else if (lastPosition) {
                         currentPosition = e.getPosition("view");
                         // 当前偏移加上历史偏移
                         var offset = kity.Vector.fromPoints(lastPosition, currentPosition);
@@ -7732,28 +7739,23 @@ _p[62] = {
                         duration = km.getOption("viewAnimationDuration");
                     }
                     if (typeof dir !== "string") {
-                        var movement = dragger.getMovement();
-                        var x = movement.x;
-                        var y = movement.y;
-                        if (dir.x !== undefined) {
-                            x = dir.x;
-                        }
-                        if (dir.y !== undefined) {
-                            y = dir.y;
-                        }
-                        dragger.moveTo(new kity.Point(x, y), duration);
+                        // if (dir.type === 'moveTo') {
+                        //     var movement = dragger._minder.getMovement();
+                        //     var x = movement.x;
+                        //     var y = movement.y;
+                        //     if (dir.x !== undefined) {
+                        //         x = dir.x;
+                        //     }
+                        //     if (dir.y !== undefined) {
+                        //         y = dir.y;
+                        //     }                    
+                        //     dragger.moveTo(new kity.Point(x, y), duration);
+                        // } else {
+                        var x = dir.x || 0;
+                        var y = dir.y || 0;
+                        dragger.move(new kity.Point(x, y), duration);
                     } else {
                         switch (dir) {
-                          case "auto":
-                            var nodeBox = dragger._minder.getRenderContainer().node.getBBox();
-                            var x = 40;
-                            if (nodeBox.width < size.width - 40) {
-                                x = (size.width - nodeBox.width) / 2 - nodeBox.x;
-                            }
-                            var y = size.height / 2 - nodeBox.y;
-                            dragger.moveTo(new kity.Point(x, size.height / 2), duration);
-                            break;
-
                           case "up":
                             dragger.move(new kity.Point(0, size.height / 2), duration);
                             break;
@@ -7930,7 +7932,7 @@ _p[63] = {
                 if (minder.getRoot().getComplex() > 200 || !duration) {
                     minder._zoomValue = value;
                     minder.zoom(value);
-                    minder.fire("viewchange");
+                    minder.fire("ZoomEnd");
                 } else {
                     var animator = new kity.Animator({
                         beginValue: minder._zoomValue,
@@ -7945,7 +7947,7 @@ _p[63] = {
                     }
                     timeline = animator.start(minder, duration, "easeInOutSine");
                     timeline.on("finish", function() {
-                        minder.fire("viewchange");
+                        minder.fire("ZoomEnd");
                     });
                 }
                 minder.fire("zoom", {
