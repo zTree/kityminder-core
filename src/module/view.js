@@ -8,6 +8,16 @@ define(function(require, exports, module) {
     var Module = require('../core/module');
     var Renderer = require('../core/render');
 
+    kity.extendClass(Minder, (function() {
+        return {
+            getMovement: function() {
+                var translate = this.getRenderContainer().transform.translate;
+                return translate ? translate[0] : new kity.Point();
+            },
+        };
+    })());
+
+
     var ViewDragger = kity.createClass('ViewDragger', {
         constructor: function(minder) {
             this._minder = minder;
@@ -40,7 +50,7 @@ define(function(require, exports, module) {
         move: function(offset, duration) {
             var minder = this._minder;
 
-            var targetPosition = this.getMovement().offset(offset);
+            var targetPosition = minder.getMovement().offset(offset);
 
             this.moveTo(targetPosition, duration);
         },
@@ -53,7 +63,7 @@ define(function(require, exports, module) {
                 if (this._moveTimeline) this._moveTimeline.stop();
 
                 this._moveTimeline = this._minder.getRenderContainer().animate(new kity.Animator(
-                    this.getMovement(),
+                    this._minder.getMovement(),
                     position,
                     function(target, value) {
                         dragger.moveTo(value);
@@ -72,18 +82,13 @@ define(function(require, exports, module) {
             this._minder.fire('viewchange');
         },
 
-        getMovement: function() {
-            var translate = this._minder.getRenderContainer().transform.translate;
-            return translate ? translate[0] : new kity.Point();
-        },
-
         getView: function() {
             var minder = this._minder;
             var c = minder._lastClientSize || {
                 width: minder.getRenderTarget().clientWidth,
                 height: minder.getRenderTarget().clientHeight
             };
-            var m = this.getMovement();
+            var m = minder.getMovement();
             var box = new kity.Box(0, 0, c.width, c.height);
             var viewMatrix = minder.getPaper().getViewPortMatrix();
             return viewMatrix.inverse().translate(-m.x, -m.y).transformBox(box);
@@ -268,27 +273,25 @@ define(function(require, exports, module) {
                     duration = km.getOption('viewAnimationDuration');
                 }
                 if (typeof dir !== 'string') {
-                    var movement = dragger.getMovement();
-                    var x = movement.x;
-                    var y = movement.y;
-                    if (dir.x !== undefined) {
-                        x = dir.x;
-                    }
-                    if (dir.y !== undefined) {
-                        y = dir.y;
-                    }                    
-                    dragger.moveTo(new kity.Point(x, y), duration);
+                    // if (dir.type === 'moveTo') {
+                    //     var movement = dragger._minder.getMovement();
+                    //     var x = movement.x;
+                    //     var y = movement.y;
+                    //     if (dir.x !== undefined) {
+                    //         x = dir.x;
+                    //     }
+                    //     if (dir.y !== undefined) {
+                    //         y = dir.y;
+                    //     }                    
+                    //     dragger.moveTo(new kity.Point(x, y), duration);
+                    // } else {
+                    var x = dir.x || 0;
+                    var y = dir.y || 0;
+                    dragger.move(new kity.Point(x, y), duration);
+                    // }
+                    
                 } else {
                     switch (dir) {
-                        case 'auto':
-                            var nodeBox = dragger._minder.getRenderContainer().node.getBBox();
-                            var x = 40;
-                            if (nodeBox.width < size.width - 40) {
-                                x = (size.width - nodeBox.width) / 2 - nodeBox.x;
-                            }
-                            var y = size.height / 2 - nodeBox.y;
-                            dragger.moveTo(new kity.Point(x, size.height / 2), duration);
-                            break;
                         case 'up':
                             dragger.move(new kity.Point(0, size.height / 2), duration);
                             break;
