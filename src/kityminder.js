@@ -87,6 +87,7 @@ define(function(require, exports, module) {
     require('./theme/wire');
     require('./theme/tianpan');
     require('./theme/wiz');
+    require('./theme/huawei');
 
 
     require('./connect/arc');

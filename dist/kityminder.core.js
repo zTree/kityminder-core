@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * Kity Minder Core - v1.4.50.7 - 2020-06-30
+ * Kity Minder Core - v1.4.50.7 - 2020-07-07
  * https://github.com/fex-team/kityminder-core
  * GitHub: https://github.com/fex-team/kityminder-core.git 
  * Copyright (c) 2020 Baidu FEX; Licensed BSD-3-Clause
@@ -3876,6 +3876,7 @@ _p[35] = {
         _p.r(79);
         _p.r(81);
         _p.r(80);
+        _p.r(82);
         _p.r(78);
         _p.r(0);
         _p.r(1);
@@ -9439,6 +9440,71 @@ _p[78] = {
         huaweiOrange["main-stroke"] = "transparent";
         huaweiOrange["sub-color"] = "#ffffff";
         theme.register("huawei-orange", huaweiOrange);
+        theme.register("wiz", huaweiWhite);
+        var wizWindowsNight = initTheme();
+        wizWindowsNight["background"] = "#23272e";
+        wizWindowsNight["root-color"] = "#2d3138";
+        wizWindowsNight["root-background"] = "#97a3b8";
+        wizWindowsNight["root-stroke"] = "#97a3b8";
+        wizWindowsNight["main-color"] = "#97a3b8";
+        wizWindowsNight["main-background"] = "#2b2f38";
+        wizWindowsNight["main-stroke"] = "#2b2f38";
+        wizWindowsNight["sub-color"] = "#97a3b8";
+        wizWindowsNight["connect-color"] = "#404959";
+        wizWindowsNight["selected-stroke"] = "#448aff";
+        wizWindowsNight["blur-selected-stroke"] = "#627088";
+        wizWindowsNight["expander-outline-stroke"] = "#97a3b8";
+        wizWindowsNight["expander-outline-fill"] = "#97a3b8";
+        wizWindowsNight["expander-sign-stroke"] = "#2d3138";
+        theme.register("wiz-windows-night", wizWindowsNight);
+        var wizMacNight = initTheme();
+        wizMacNight["background"] = "#272727";
+        wizMacNight["root-color"] = "#000000";
+        wizMacNight["root-background"] = "#848484";
+        wizMacNight["root-stroke"] = "#848484";
+        wizMacNight["main-color"] = "#a6a6a6";
+        wizMacNight["main-background"] = "#333333";
+        wizMacNight["main-stroke"] = "#333333";
+        wizMacNight["sub-color"] = "#a6a6a6";
+        wizMacNight["connect-color"] = "#474747";
+        wizMacNight["selected-stroke"] = "#448aff";
+        wizMacNight["blur-selected-stroke"] = "#5c5c5c";
+        wizMacNight["expander-outline-stroke"] = "#848484";
+        wizMacNight["expander-outline-fill"] = "#848484";
+        wizMacNight["expander-sign-stroke"] = "#000000";
+        theme.register("wiz-mac-night", wizMacNight);
+        var wizIosNight = initTheme();
+        wizIosNight["background"] = "#1f2126";
+        wizIosNight["root-color"] = "#353c47";
+        wizIosNight["root-background"] = "#7990b6";
+        wizIosNight["root-stroke"] = "#7990b6";
+        wizIosNight["main-color"] = "#7990b6";
+        wizIosNight["main-background"] = "#32353e";
+        wizIosNight["main-stroke"] = "#32353e";
+        wizIosNight["sub-color"] = "#7990b6";
+        wizIosNight["connect-color"] = "rgba(68, 138, 255, .2)";
+        wizIosNight["selected-stroke"] = "#448aff";
+        wizIosNight["blur-selected-stroke"] = "#536178";
+        wizIosNight["expander-outline-stroke"] = "#7990b6";
+        wizIosNight["expander-outline-fill"] = "#7990b6";
+        wizIosNight["expander-sign-stroke"] = "#353c47";
+        theme.register("wiz-ios-night", wizIosNight);
+        var wizAndroidNight = initTheme();
+        wizAndroidNight["background"] = "#1f2126";
+        wizAndroidNight["root-color"] = "#455a64";
+        wizAndroidNight["root-background"] = "#7990b6";
+        wizAndroidNight["root-stroke"] = "#7990b6";
+        wizAndroidNight["main-color"] = "#7990b6";
+        wizAndroidNight["main-background"] = "#353c47";
+        wizAndroidNight["main-stroke"] = "#353c47";
+        wizAndroidNight["sub-color"] = "#7990b6";
+        wizAndroidNight["connect-color"] = "#273d62";
+        wizAndroidNight["selected-stroke"] = "#448aff";
+        wizAndroidNight["blur-selected-stroke"] = "#536178";
+        wizAndroidNight["expander-outline-stroke"] = "#7990b6";
+        wizAndroidNight["expander-outline-fill"] = "#7990b6";
+        wizAndroidNight["expander-sign-stroke"] = "#455a64";
+        theme.register("wiz-android-night", wizAndroidNight);
     }
 };
 
