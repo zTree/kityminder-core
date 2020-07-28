@@ -131,21 +131,24 @@ define(function(require, exports, module) {
 
             constructor: function(node) {
                 var outlineStroke = node.getStyle('expander-outline-stroke') || 'gray';
-                var outlinefill = node.getStyle('expander-outline-fill') || 'white';
+                var outlineFill = node.getStyle('expander-outline-fill') || 'white';
                 var signStroke = node.getStyle('expander-sign-stroke') || 'gray';
                 this.callBase();
                 this.radius = 6;
-                this.outline = new kity.Circle(this.radius).stroke(outlineStroke).fill(outlinefill);
+                // 2020-07-28 增加 Expander 的 可触范围
+                this.outSpace = new kity.Circle(this.radius*2.5).stroke('transparent').fill('transparent');
+                this.outline = new kity.Circle(this.radius).stroke(outlineStroke).fill(outlineFill);
                 this.sign = new kity.Path().stroke(signStroke);
-                this.addShapes([this.outline, this.sign]);
+                this.addShapes([this.outSpace, this.outline, this.sign]);
                 this.initEvent(node);
                 this.setId(utils.uuid('node_expander'));
                 this.setStyle('cursor', 'pointer');
+
             },
 
             initEvent: function(node) {
                 this.on('mousedown', function(e) {
-                    minder.select([node], true);
+                    // minder.select([node], true);
                     if (node.isExpanded()) {
                         node.collapse();
                     } else {
@@ -204,9 +207,9 @@ define(function(require, exports, module) {
 
                 if (visible && node.children.length) {
                     var outlineStroke = node.getStyle('expander-outline-stroke') || 'gray';
-                    var outlinefill = node.getStyle('expander-outline-fill') || 'white';
+                    var outlineFill = node.getStyle('expander-outline-fill') || 'white';
                     var signStroke = node.getStyle('expander-sign-stroke') || 'gray';
-                    expander.outline.stroke(outlineStroke).fill(outlinefill);
+                    expander.outline.stroke(outlineStroke).fill(outlineFill);
                     expander.sign.stroke(signStroke);
                 }
 

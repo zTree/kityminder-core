@@ -38,14 +38,14 @@
             },
             "children": [
                 {
-                    "data": { "text": "新闻" },
+                    "data": { "text": "新闻", "note": "asg" },
                     "children": [
                         {"data": { "text": "新闻 1 阿斯顿发射点打发士大夫啊手动阀啊手动阀啊手动阀啊手动阀啊手动阀啊手动阀阿道夫啊手动阀啊手动阀的色放", "image": "https://www.baidu.com/img/bd_logo1.png?where=super",
                         "imageSize": { "width": 270, "height": 129 }}},
                         {"data": { "text": "新闻 2" }}
                     ]
                 },
-                { "data": { "text": "网页阿斯达克放假啊士大夫士大夫卡\n拉季啊手动阀就开始了地方啊撒打发离开家啊手动阀\n就开始了地方啊沙发上的地方", "priority": 1} },
+                { "data": { "text": "网页阿斯达克放假啊士大夫士大夫卡\n拉季啊手动阀就开始了地方啊撒打发离开家啊手动阀\n就开始了地方啊沙发上的地方",  "note": "网页阿斯达克放假啊士大夫士大夫卡\n拉季啊手动阀就开始了地方啊撒打发离开家啊手动阀\n就开始了地方啊沙发上的地方", "priority": 1} },
                 { "data": { "text": "贴吧", "priority": 2 } },
                 { "data": { "text": "知道", "priority": 2 } },
                 { "data": { "text": "音乐", "priority": 3 } },
@@ -77,6 +77,20 @@
         });
         km.setup('#minder-view');
         km.execCommand('hand');
+        km.on('nodeClick', function(e) {
+            if (!e.node.parent || e.node.children.length === 0) {
+                return;
+            }
+                
+            // console.log(e.node);
+            if (e.node.isExpanded()) {
+                e.node.collapse();
+            } else {
+                e.node.expand();
+            }
+            e.node.renderTree();
+            km.layout(100);
+        });
 
     });
     seajs.use('start');

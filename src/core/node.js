@@ -31,6 +31,7 @@ define(function(require, exports, module) {
 
             // 绘图容器
             this.initContainers();
+            this.initEvent();
 
             if (utils.isString(textOrData)) {
                 this.setText(textOrData);
@@ -42,6 +43,55 @@ define(function(require, exports, module) {
         initContainers: function() {
             this.rc = new kity.Group().setId(utils.uuid('minder_node'));
             this.rc.minderNode = this;
+        },
+
+        initEvent: function() {
+            var self = this;
+            function isParent(target, parent) {
+                if (!target || !parent) {
+                    return false;
+                }
+                if (target === parent) {
+                    return true;
+                }
+                while (target) {
+                    target = target.parentNode;
+                    if (/^svg$/i.test(target.tagName)) {
+                        target = null;
+                    }
+                    if (target === parent) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            this.rc.on('mousedown', function(e) {
+                if (!self.parent) {
+                    self.getMinder().fire('nodeClick', {
+                        node: self
+                    });
+                    return;
+                }
+                var expander, noteIcon, nodeLink;
+                for (var i = 0; i < self.rc.items.length; i++) {
+                    var item = self.rc.items[i];
+                    if (item.constructor.name === 'Expander') {
+                        expander = item;
+                    } else if (item.constructor.name === 'NoteIcon') {
+                        noteIcon = item;
+                    } else if (item.constructor.name === 'HyperLink') {
+                        nodeLink = item;
+                    }
+                }
+                var target = e.originEvent.target;
+                if (!isParent(target, expander && expander.node) && 
+                    !isParent(target, nodeLink && nodeLink.node) &&
+                    !isParent(target, noteIcon && noteIcon.node)) {
+                    self.getMinder().fire('nodeClick', {
+                        node: self
+                    });
+                }
+            });
         },
 
         /**

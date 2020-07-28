@@ -54,14 +54,16 @@ define(function(require, exports, module) {
 
             constructor: function() {
                 this.callBase();
-                this.width = 16;
-                this.height = 17;
-                this.rect = new kity.Rect(16, 17, 0.5, -8.5, 2).fill('transparent');
-                this.path = new kity.Path().setPathData(NOTE_PATH).setTranslate(2.5, -6.5);
-                this.addShapes([this.rect, this.path]);
+                this.width = 20;
+                this.height = 20;
+                // 2020-07-28 增加 Expander 的 可触范围
+                this.outSpace = new kity.Rect(30, 30, 1.5, -14.5, 2).fill('transparent');
+                this.rect = new kity.Rect(22, 22, 5.5, -10.5, 2).fill('transparent');
+                this.path = new kity.Path().setPathData(NOTE_PATH).setTranslate(10.5, -5.5);
+                this.addShapes([this.outSpace, this.rect, this.path]);
 
                 this.on('mouseover', function() {
-                    this.rect.fill('rgba(255, 255, 200, .8)');
+                    this.rect.fill('rgba(0, 0, 0, .1)');
                 }).on('mouseout', function() {
                     this.rect.fill('transparent');
                 });

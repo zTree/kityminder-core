@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * Kity Minder Core - v1.4.51 - 2020-07-07
+ * Kity Minder Core - v1.4.52 - 2020-07-28
  * https://github.com/fex-team/kityminder-core
  * GitHub: https://github.com/fex-team/kityminder-core.git 
  * Copyright (c) 2020 Baidu FEX; Licensed BSD-3-Clause
@@ -2157,6 +2157,7 @@ _p[21] = {
                 };
                 // 绘图容器
                 this.initContainers();
+                this.initEvent();
                 if (utils.isString(textOrData)) {
                     this.setText(textOrData);
                 } else if (utils.isObject(textOrData)) {
@@ -2166,6 +2167,52 @@ _p[21] = {
             initContainers: function() {
                 this.rc = new kity.Group().setId(utils.uuid("minder_node"));
                 this.rc.minderNode = this;
+            },
+            initEvent: function() {
+                var self = this;
+                function isParent(target, parent) {
+                    if (!target || !parent) {
+                        return false;
+                    }
+                    if (target === parent) {
+                        return true;
+                    }
+                    while (target) {
+                        target = target.parentNode;
+                        if (/^svg$/i.test(target.tagName)) {
+                            target = null;
+                        }
+                        if (target === parent) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+                this.rc.on("mousedown", function(e) {
+                    if (!self.parent) {
+                        self.getMinder().fire("nodeClick", {
+                            node: self
+                        });
+                        return;
+                    }
+                    var expander, noteIcon, nodeLink;
+                    for (var i = 0; i < self.rc.items.length; i++) {
+                        var item = self.rc.items[i];
+                        if (item.constructor.name === "Expander") {
+                            expander = item;
+                        } else if (item.constructor.name === "NoteIcon") {
+                            noteIcon = item;
+                        } else if (item.constructor.name === "HyperLink") {
+                            nodeLink = item;
+                        }
+                    }
+                    var target = e.originEvent.target;
+                    if (!isParent(target, expander && expander.node) && !isParent(target, nodeLink && nodeLink.node) && !isParent(target, noteIcon && noteIcon.node)) {
+                        self.getMinder().fire("nodeClick", {
+                            node: self
+                        });
+                    }
+                });
             },
             /**
          * 判断节点是否根节点
@@ -5195,20 +5242,22 @@ _p[46] = {
                 base: kity.Group,
                 constructor: function(node) {
                     var outlineStroke = node.getStyle("expander-outline-stroke") || "gray";
-                    var outlinefill = node.getStyle("expander-outline-fill") || "white";
+                    var outlineFill = node.getStyle("expander-outline-fill") || "white";
                     var signStroke = node.getStyle("expander-sign-stroke") || "gray";
                     this.callBase();
                     this.radius = 6;
-                    this.outline = new kity.Circle(this.radius).stroke(outlineStroke).fill(outlinefill);
+                    // 2020-07-28 增加 Expander 的 可触范围
+                    this.outSpace = new kity.Circle(this.radius * 2.5).stroke("transparent").fill("transparent");
+                    this.outline = new kity.Circle(this.radius).stroke(outlineStroke).fill(outlineFill);
                     this.sign = new kity.Path().stroke(signStroke);
-                    this.addShapes([ this.outline, this.sign ]);
+                    this.addShapes([ this.outSpace, this.outline, this.sign ]);
                     this.initEvent(node);
                     this.setId(utils.uuid("node_expander"));
                     this.setStyle("cursor", "pointer");
                 },
                 initEvent: function(node) {
                     this.on("mousedown", function(e) {
-                        minder.select([ node ], true);
+                        // minder.select([node], true);
                         if (node.isExpanded()) {
                             node.collapse();
                         } else {
@@ -5258,9 +5307,9 @@ _p[46] = {
                     var position = node.getVertexIn().offset(vector.reverse());
                     if (visible && node.children.length) {
                         var outlineStroke = node.getStyle("expander-outline-stroke") || "gray";
-                        var outlinefill = node.getStyle("expander-outline-fill") || "white";
+                        var outlineFill = node.getStyle("expander-outline-fill") || "white";
                         var signStroke = node.getStyle("expander-sign-stroke") || "gray";
-                        expander.outline.stroke(outlineStroke).fill(outlinefill);
+                        expander.outline.stroke(outlineStroke).fill(outlineFill);
                         expander.sign.stroke(signStroke);
                     }
                     this.expander.setTranslate(position);
@@ -6260,13 +6309,15 @@ _p[54] = {
                 base: kity.Group,
                 constructor: function() {
                     this.callBase();
-                    this.width = 16;
-                    this.height = 17;
-                    this.rect = new kity.Rect(16, 17, .5, -8.5, 2).fill("transparent");
-                    this.path = new kity.Path().setPathData(NOTE_PATH).setTranslate(2.5, -6.5);
-                    this.addShapes([ this.rect, this.path ]);
+                    this.width = 20;
+                    this.height = 20;
+                    // 2020-07-28 增加 Expander 的 可触范围
+                    this.outSpace = new kity.Rect(30, 30, 1.5, -14.5, 2).fill("transparent");
+                    this.rect = new kity.Rect(22, 22, 5.5, -10.5, 2).fill("transparent");
+                    this.path = new kity.Path().setPathData(NOTE_PATH).setTranslate(10.5, -5.5);
+                    this.addShapes([ this.outSpace, this.rect, this.path ]);
                     this.on("mouseover", function() {
-                        this.rect.fill("rgba(255, 255, 200, .8)");
+                        this.rect.fill("rgba(0, 0, 0, .1)");
                     }).on("mouseout", function() {
                         this.rect.fill("transparent");
                     });
