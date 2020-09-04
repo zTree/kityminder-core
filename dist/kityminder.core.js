@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * Kity Minder Core - v1.4.52 - 2020-07-28
+ * Kity Minder Core - v1.4.53 - 2020-09-04
  * https://github.com/fex-team/kityminder-core
  * GitHub: https://github.com/fex-team/kityminder-core.git 
  * Copyright (c) 2020 Baidu FEX; Licensed BSD-3-Clause
@@ -6316,10 +6316,27 @@ _p[54] = {
                     this.rect = new kity.Rect(22, 22, 5.5, -10.5, 2).fill("transparent");
                     this.path = new kity.Path().setPathData(NOTE_PATH).setTranslate(10.5, -5.5);
                     this.addShapes([ this.outSpace, this.rect, this.path ]);
-                    this.on("mouseover", function() {
+                    this.isShowNote = false;
+                    this.showNote = function() {
+                        this.isShowNote = true;
                         this.rect.fill("rgba(0, 0, 0, .1)");
-                    }).on("mouseout", function() {
+                    };
+                    this.hideNote = function() {
+                        this.isShowNote = false;
                         this.rect.fill("transparent");
+                    };
+                    this.on("mouseover", function(e) {
+                        if (this.node.contains(e.originEvent.fromElement)) {
+                            return;
+                        }
+                        this.rect.fill("rgba(0, 0, 0, .1)");
+                    }).on("mouseout", function(e) {
+                        if (this.node.contains(e.originEvent.toElement)) {
+                            return;
+                        }
+                        if (!this.isShowNote) {
+                            this.rect.fill("transparent");
+                        }
                     });
                     this.setStyle("cursor", "pointer");
                 }
@@ -6330,23 +6347,17 @@ _p[54] = {
                     var icon = new NoteIcon();
                     icon.on("mousedown", function(e) {
                         e.preventDefault();
-                        node.getMinder().fire("editnoterequest", {
+                        node.getMinder().fire("clicknoterequest", {
                             node: node,
                             icon: icon
                         });
                     });
-                    icon.on("mouseover", function() {
-                        node.getMinder().fire("shownoterequest", {
-                            node: node,
-                            icon: icon
-                        });
-                    });
-                    icon.on("mouseout", function() {
-                        node.getMinder().fire("hidenoterequest", {
-                            node: node,
-                            icon: icon
-                        });
-                    });
+                    // icon.on('mouseover', function() {
+                    //     node.getMinder().fire('shownoterequest', {node: node, icon: icon});
+                    // });
+                    // icon.on('mouseout', function() {
+                    //     node.getMinder().fire('hidenoterequest', {node: node, icon: icon});
+                    // });
                     return icon;
                 },
                 shouldRender: function(node) {

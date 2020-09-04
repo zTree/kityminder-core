@@ -69,9 +69,11 @@
     });
     define('start', function(require) {
         var Minder = require('kityminder').Minder;
-
+        var options = {
+            enableKeyReceiver: false
+        }
         // 创建 km 实例
-        var km = window.km = new Minder();
+        var km = window.km = new Minder(options);
         km.on('layoutallfinish', function() {
             // km.execCommand('Move', 'auto');
         });
@@ -91,6 +93,14 @@
             e.node.renderTree();
             km.layout(100);
         });
+        km.on('editnoterequest', function(e) {
+            if (window.z) {
+                e.icon.hideNote();                
+            } else {
+                e.icon.showNote();
+            }
+            window.z = !window.z;
+        })
 
     });
     seajs.use('start');

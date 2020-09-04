@@ -62,10 +62,29 @@ define(function(require, exports, module) {
                 this.path = new kity.Path().setPathData(NOTE_PATH).setTranslate(10.5, -5.5);
                 this.addShapes([this.outSpace, this.rect, this.path]);
 
-                this.on('mouseover', function() {
+                this.isShowNote = false;
+
+                this.showNote = function() {
+                   this.isShowNote = true;
+                   this.rect.fill('rgba(0, 0, 0, .1)');
+                }
+                this.hideNote = function() {
+                   this.isShowNote = false;
+                   this.rect.fill('transparent');
+                }
+
+                this.on('mouseover', function(e) {
+                    if (this.node.contains(e.originEvent.fromElement)) {
+                        return;
+                    }
                     this.rect.fill('rgba(0, 0, 0, .1)');
-                }).on('mouseout', function() {
-                    this.rect.fill('transparent');
+                }).on('mouseout', function(e) {
+                    if (this.node.contains(e.originEvent.toElement)) {
+                        return;
+                    }
+                    if (!this.isShowNote) {
+                        this.rect.fill('transparent');
+                    }
                 });
 
                 this.setStyle('cursor', 'pointer');
@@ -79,14 +98,14 @@ define(function(require, exports, module) {
                 var icon = new NoteIcon();
                 icon.on('mousedown', function(e) {
                     e.preventDefault();
-                    node.getMinder().fire('editnoterequest', {node: node, icon: icon});
+                    node.getMinder().fire('clicknoterequest', {node: node, icon: icon});
                 });
-                icon.on('mouseover', function() {
-                    node.getMinder().fire('shownoterequest', {node: node, icon: icon});
-                });
-                icon.on('mouseout', function() {
-                    node.getMinder().fire('hidenoterequest', {node: node, icon: icon});
-                });
+                // icon.on('mouseover', function() {
+                //     node.getMinder().fire('shownoterequest', {node: node, icon: icon});
+                // });
+                // icon.on('mouseout', function() {
+                //     node.getMinder().fire('hidenoterequest', {node: node, icon: icon});
+                // });
                 return icon;
             },
 
